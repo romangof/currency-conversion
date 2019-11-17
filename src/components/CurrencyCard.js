@@ -50,6 +50,6 @@ CurrencyCard.propTypes = {
     }),
     rates: PropTypes.object,
     readOnly: PropTypes.bool,
-    tabChange: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func,
+    tabChange: PropTypes.func.isRequired
 };

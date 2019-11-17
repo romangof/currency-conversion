@@ -43,7 +43,7 @@ export default function App() {
     }, []);
 
     const handleInputChange = event => {
-        setSelected({...selected, value: event.target.value});
+        setSelected({...selected, value: parseInt(event.target.value)});
     };
 
     const handleTabChange = (source, value) => {
@@ -58,11 +58,11 @@ export default function App() {
                         <h1>Currency Conversion</h1>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item sm={12} md={6}>
                         <CurrencyCard selected={selected} rates={rates} onChange={handleInputChange} tabChange={handleTabChange} />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item sm={12} md={6}>
                         <CurrencyCard selected={selected} rates={rates} readOnly={true} tabChange={handleTabChange} />
                     </Grid>
                 </Grid>
