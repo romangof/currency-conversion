@@ -30,7 +30,7 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
                 variant="fullWidth"
             >
                 {Object.keys(rates).map(currency => {
-                    return <Tab key={currency}
+                    return <Tab key={`${source}.${currency}`}
                         label={currency}
                         value={currency}
                         onClick={() => tabChange(source, currency)}

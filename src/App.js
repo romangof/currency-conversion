@@ -5,13 +5,11 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import CurrencyCard from './components/CurrencyCard';
-import { addCurrencyRate } from './reducers';
 
 import './App.css';
 
 const API = 'https://api.exchangeratesapi.io/latest';
 const defaultCurrencies = ['EUR', 'USD', 'GBP'];
-const initialRates = { EUR: {}, USD: {}, GBP: {} };
 
 const theme = createMuiTheme({
     palette: {
@@ -21,7 +19,7 @@ const theme = createMuiTheme({
     }
 });
 
-async function fetchData(target, base = 'EUR', dispatch) {
+async function fetchData(target, base = 'EUR', setRates) {
     target = target.filter(currency => currency !== base);
 
     let query = `?symbols=${target.join()}`;
@@ -33,15 +31,15 @@ async function fetchData(target, base = 'EUR', dispatch) {
     const request = await axios(API + query);
     const data = request.data;
 
-    dispatch({ type: 'ADD', payload: { [base]: data.rates } });
+    setRates(prevRates => ({ ...prevRates, [base]: data.rates }));
 }
 
 export default function App() {
-    const [rates, dispatch] = useReducer(addCurrencyRate, initialRates);
+    const [rates, setRates] = useState({ EUR: {}, USD: {}, GBP: {} });
     const [selected, setSelected] = useState({ origin: 'EUR', target: 'USD', value: 0 });
 
     useEffect(() => {
-        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency, dispatch));
+        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency, setRates));
     }, []);
 
     const handleInputChange = event => {
@@ -60,11 +58,11 @@ export default function App() {
                         <h1>Currency Conversion</h1>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <CurrencyCard selected={selected} rates={rates} onChange={handleInputChange} tabChange={handleTabChange} />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <CurrencyCard selected={selected} rates={rates} readOnly={true} tabChange={handleTabChange} />
                     </Grid>
                 </Grid>
