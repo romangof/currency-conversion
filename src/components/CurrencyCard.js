@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Tabs, Tab, TextField } from '@material-ui/core';
+import { Card, Tabs, Tab, TextField, InputAdornment } from '@material-ui/core';
+
+const currencySigns = {
+    EUR: '€',
+    USD: '$',
+    GBP: '£'
+};
 
 export default function CurrencyCard({ selected, rates, onChange, tabChange, readOnly = false}) {
     const tab = readOnly ? selected.target : selected.origin;
     const [selectedTab, setSelectedTab] = React.useState(tab);
-
-    const handleChange = (_event, newValue) => setSelectedTab(newValue);
-
     const rate = rates[selected.origin][selected.target] || 1;
     const source = readOnly ? 'target' : 'origin';
+
+    const handleChange = (_event, newValue) => setSelectedTab(newValue);
 
     return (
         <Card>
@@ -20,7 +25,10 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
                 onChange={onChange}
                 style={{width: '85%'}}
                 margin="normal"
-                InputProps={{readOnly}}
+                InputProps={{
+                    readOnly,
+                    startAdornment: <InputAdornment position="start">{currencySigns[tab]}</InputAdornment>
+                }}
             />
 
             <Tabs
