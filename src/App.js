@@ -15,9 +15,9 @@ const initialRates = { EUR: {}, USD: {}, GBP: {} };
 
 const theme = createMuiTheme({
     palette: {
-        primary: {main: '#10316b'},
-        secondary: {main: '#000000'},
-        background: {default: '#14213D', light: '#E5E5E5'},
+        primary: { main: '#10316b' },
+        secondary: { main: '#000000' },
+        background: { default: '#14213D', light: '#E5E5E5' },
     },
 
     status: {
@@ -59,10 +59,11 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
             <Container className="App" maxWidth={false}>
+                <Grid container className="Grid" justify="space-around" alignItems="flex-start" spacing={4}>
+                    <Grid item xs={12}>
+                        <h1>Currency Conversion</h1>
+                    </Grid>
 
-                <h1>Currency Conversion</h1>
-
-                <Grid container className="Grid" justify="space-around" alignItems="center" spacing={4}>
                     <Grid item xs={6}>
                         <CurrencyCard selected={selected} rates={rates} onChange={handleInputChange} tabChange={handleTabChange} />
                     </Grid>

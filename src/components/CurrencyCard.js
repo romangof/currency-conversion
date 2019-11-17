@@ -5,10 +5,9 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
     const tab = readOnly ? selected.target : selected.origin;
     const [selectedTab, setSelectedTab] = React.useState(tab);
 
-    const handleChange = (_ev, newValue) => setSelectedTab(newValue);
+    const handleChange = (_event, newValue) => setSelectedTab(newValue);
 
     const rate = rates[selected.origin][selected.target] || 1;
-    const amount = parseInt(selected.value);
     const source = readOnly ? 'target' : 'origin';
 
     return (
@@ -16,11 +15,10 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
             <TextField
                 label="Amount"
                 type="number"
-                value={readOnly ? amount * rate : amount}
+                value={readOnly ? selected.value * rate : selected.value}
                 onChange={onChange}
                 style={{width: '85%'}}
                 margin="normal"
-                // variant="filled"
                 InputProps={{readOnly}}
             />
 
