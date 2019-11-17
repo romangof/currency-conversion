@@ -1,3 +1,15 @@
+## Workflow
+
+Started on Sat 16.11  
+Spent around 2 hours setting a first version with a basic template  
+Had an issue with Material UI theme as I wanted to use a gradient, and couldn't do it they way I wanted so decided not to  
+Tried using fetch to make the request to the API, but quite soon remembered how annoying fetch can be and decided to use axios  
+Had some issues setting the source currency as I wanted to make only one request, this took me a while to realize  
+On Sunday I started around noon and quite soon made my mind that it was easier/faster to just make a couple more requests than trying to calculate all of the rates between the different currencies  
+On Sunday afternoon I spent the most time trying to setup unit tests  
+
+----
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
