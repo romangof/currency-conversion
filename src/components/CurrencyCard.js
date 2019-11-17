@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card, Tabs, Tab, TextField } from '@material-ui/core';
 
-export default function CurrencyCard({ selected, currencies, onChange, tabChange, param, readOnly = false}) {
-    const [value, setValue] = React.useState(0);
+export default function CurrencyCard({ selected, rates, onChange, tabChange, readOnly = false}) {
+    const [selectedTab, setSelectedTab] = React.useState(0);
 
-    const handleChange = (_ev, newValue) => setValue(newValue);
+    const handleChange = (_ev, newValue) => setSelectedTab(newValue);
 
-    const currencyRate = currencies[selected[param]] || 1;
-
-    // useEffect(() => {
-    //     console.log(arguments)
-    // });
+    const rate = rates[selected.origin][selected.target] || 1;
+    const amount = parseInt(selected.value);
+    const source = readOnly ? 'target' : 'origin';
 
     return (
         <Card>
             <TextField
-                multiline
-                rowsMax="4"
                 label="Amount"
                 type="number"
-                defaultValue={readOnly ? selected.value * selected.rate : selected.value}
+                value={readOnly ? amount * rate : amount}
                 onChange={onChange}
                 style={{width: '85%'}}
                 margin="normal"
@@ -28,14 +24,14 @@ export default function CurrencyCard({ selected, currencies, onChange, tabChange
             />
 
             <Tabs
-                value={value}
+                value={selectedTab}
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
                 variant="fullWidth"
             >
-                {Object.keys(currencies).map(currency => {
-                    return <Tab key={currency} label={currency} onClick={() => tabChange(param, currency, currencies[currency])} />;
+                {Object.keys(rates).map(currency => {
+                    return <Tab key={currency} label={currency} onClick={() => tabChange(source, currency)} />;
                 })}
             </Tabs>
         </Card>
