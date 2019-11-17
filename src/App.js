@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Grid, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
