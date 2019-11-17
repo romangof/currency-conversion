@@ -2,7 +2,8 @@ import React from 'react';
 import { Card, Tabs, Tab, TextField } from '@material-ui/core';
 
 export default function CurrencyCard({ selected, rates, onChange, tabChange, readOnly = false}) {
-    const [selectedTab, setSelectedTab] = React.useState(0);
+    const tab = readOnly ? selected.target : selected.origin;
+    const [selectedTab, setSelectedTab] = React.useState(tab);
 
     const handleChange = (_ev, newValue) => setSelectedTab(newValue);
 
@@ -31,7 +32,11 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
                 variant="fullWidth"
             >
                 {Object.keys(rates).map(currency => {
-                    return <Tab key={currency} label={currency} onClick={() => tabChange(source, currency)} />;
+                    return <Tab key={currency}
+                                label={currency}
+                                value={currency}
+                                onClick={() => tabChange(source, currency)}
+                            />;
                 })}
             </Tabs>
         </Card>

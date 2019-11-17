@@ -41,31 +41,26 @@ export default function App() {
 
             const request = await axios(API + query);
             const data = request.data;
-            
-            // console.log('fetching');
 
             dispatch({type: 'ADD', payload: {[base]: data.rates}});
         };
 
-        defaultCurrencies.map(currency => {fetchData(defaultCurrencies, currency);});
+        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency));
     }, []);
 
     const handleInputChange = ev => {
         setSelected({...selected, value: ev.target.value});
     };
 
-    const handleTabChange = (param, value) => {
-        setSelected({...selected, [param]: value});
+    const handleTabChange = (source, value) => {
+        setSelected({...selected, [source]: value});
     };
 
     return (
         <ThemeProvider theme={theme}>
             <Container className="App" maxWidth={false}>
 
-                {/* {console.log(999, currencies, Object.keys(currencies))} */}
-                {/* {console.log(999, selected)} */}
-
-                <h1>title</h1>
+                <h1>Currency Conversion</h1>
 
                 <Grid container className="Grid" justify="space-around" alignItems="center" spacing={4}>
                     <Grid item xs={6}>
