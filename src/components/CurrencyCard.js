@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Tabs, Tab, TextField } from '@material-ui/core';
 
 export default function CurrencyCard({ selected, rates, onChange, tabChange, readOnly = false}) {
@@ -40,3 +41,15 @@ export default function CurrencyCard({ selected, rates, onChange, tabChange, rea
         </Card>
     );
 }
+
+CurrencyCard.propTypes = {
+    selected: PropTypes.shape({
+        target: PropTypes.string,
+        origin: PropTypes.string,
+        value: PropTypes.number
+    }),
+    rates: PropTypes.object,
+    readOnly: PropTypes.bool,
+    tabChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
+};
