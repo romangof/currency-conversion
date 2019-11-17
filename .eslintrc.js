@@ -2,13 +2,15 @@ module.exports = {
     'env': {
         'browser': true,
         'es6': true,
-        'node': true
+        'node': true,
+        "jest/globals": true
     },
-    'extends': 'eslint:recommended',
-    'globals': {
-        'Atomics': 'readonly',
-        'SharedArrayBuffer': 'readonly'
-    },
+    'extends': [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:jest/recommended',
+        'plugin:jest/recommended'
+    ],
     'parserOptions': {
         'ecmaFeatures': {
             'jsx': true
@@ -17,7 +19,8 @@ module.exports = {
         'sourceType': 'module'
     },
     'plugins': [
-        'react'
+        'react',
+        'jest'
     ],
     'rules': {
         "react/jsx-uses-react": "error",
