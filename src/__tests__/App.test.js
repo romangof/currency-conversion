@@ -1,14 +1,13 @@
 import React from 'react';
-import mockAxios from "jest-mock-axios";
+import axios from 'axios';
 import { shallow, mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
 
 import App, { fetchData, defaultCurrencies, API } from '../App';
 
-describe('App', () => {
-    afterEach(() => {
-        mockAxios.reset();
-    });
+jest.mock('axios');
 
+describe('App', () => {
     it('Renders without crashing', () => {
         shallow(<App />);
     });
@@ -16,12 +15,7 @@ describe('App', () => {
     it('fetches rates correctly', async () => {
         const setRates = jest.fn().mockResolvedValue();
 
-        fetchData(['USD'], 'EUR', setRates);
-
-        expect(mockAxios.get).toHaveBeenCalled();
-        expect(mockAxios.get).toHaveBeenCalledWith(`${API}?symbols=USD`);
-
-        mockAxios.mockResponse({
+        axios.get.mockResolvedValue({
             data: {
                 base: 'EUR',
                 date: '2019-11-15',
@@ -29,19 +23,36 @@ describe('App', () => {
             }
         });
 
-        // expect(setRates).toHaveBeenCalled();
+        await fetchData(['USD'], 'EUR', setRates);
+
+        expect(axios.get).toHaveBeenCalled();
+        expect(axios.get).toHaveBeenCalledWith(`${API}?symbols=USD`);
+        expect(setRates).toHaveBeenCalled();
     });
 
-    it('fetches rates when app is mounted', async () => {
-        mount(<App />);
+    xit('fetches rates when app is mounted', () => {
+        act(() => {
+            mount(<App />);
 
-        const requestsMade = defaultCurrencies.length;
+            const requestsMade = defaultCurrencies.length;
 
-        expect(mockAxios.get).toHaveBeenCalledTimes(requestsMade);
+            axios.get.mockResolvedValue({
+                data: {
+                    // base: 'EUR',
+                    // date: '2019-11-15',
+                    // rates: { USD: 1.1034, GBP: 0.8566 }
+                }
+            });
+
+            expect(axios.get).toHaveBeenCalledTimes(requestsMade);
+        });
+        
     });
     
     it('displays two currency cards', () => {
-        const wrapper = mount(<App />);
-        expect(wrapper.find('.MuiPaper-rounded')).toHaveLength(2);
+        act(() => {
+            const wrapper = mount(<App />);
+            expect(wrapper.find('.MuiPaper-rounded')).toHaveLength(2);
+        });
     });
 });
