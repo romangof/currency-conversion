@@ -15,41 +15,37 @@ const initialRates = { EUR: {}, USD: {}, GBP: {} };
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#10316b' },
-        secondary: { main: '#000000' },
-        background: { default: '#14213D', light: '#E5E5E5' },
-    },
-
-    status: {
-        danger: 'orange',
-    },
+        primary: { main: '#004E98', highlight: '#FF6700' },
+        secondary: { main: '#FF6700' },
+        background: { default: '#C0C0C0', light: '#E5E5E5' },
+    }
 });
+
+async function fetchData(target, base = 'EUR', dispatch) {
+    target = target.filter(currency => currency !== base);
+
+    let query = `?symbols=${target.join()}`;
+
+    if (base !== 'EUR') {
+        query += `&base=${base}`;
+    }
+
+    const request = await axios(API + query);
+    const data = request.data;
+
+    dispatch({ type: 'ADD', payload: { [base]: data.rates } });
+}
 
 export default function App() {
     const [rates, dispatch] = useReducer(addCurrencyRate, initialRates);
     const [selected, setSelected] = useState({ origin: 'EUR', target: 'USD', value: 0 });
 
     useEffect(() => {
-        const fetchData = async (target, base = 'EUR') => {
-            target = target.filter(currency => currency !== base);
-
-            let query = `?symbols=${target.join()}`;
-
-            if (base !== 'EUR') {
-                query += `&base=${base}`;
-            }
-
-            const request = await axios(API + query);
-            const data = request.data;
-
-            dispatch({type: 'ADD', payload: {[base]: data.rates}});
-        };
-
-        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency));
+        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency, dispatch));
     }, []);
 
-    const handleInputChange = ev => {
-        setSelected({...selected, value: ev.target.value});
+    const handleInputChange = event => {
+        setSelected({...selected, value: event.target.value});
     };
 
     const handleTabChange = (source, value) => {
