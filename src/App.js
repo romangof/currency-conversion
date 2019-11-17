@@ -8,8 +8,8 @@ import CurrencyCard from './components/CurrencyCard';
 
 import './App.css';
 
-const API = 'https://api.exchangeratesapi.io/latest';
-const defaultCurrencies = ['EUR', 'USD', 'GBP'];
+export const defaultCurrencies = ['EUR', 'USD', 'GBP'];
+export const API = 'https://api.exchangeratesapi.io/latest';
 
 const theme = createMuiTheme({
     palette: {
@@ -20,7 +20,7 @@ const theme = createMuiTheme({
     }
 });
 
-async function fetchData(target, base = 'EUR', setRates) {
+export async function fetchData(target, base = 'EUR', setRates) {
     target = target.filter(currency => currency !== base);
 
     let query = `?symbols=${target.join()}`;
@@ -29,7 +29,7 @@ async function fetchData(target, base = 'EUR', setRates) {
         query += `&base=${base}`;
     }
 
-    const request = await axios(API + query);
+    const request = await axios.get(API + query);
     const data = request.data;
 
     setRates(prevRates => ({ ...prevRates, [base]: data.rates }));
