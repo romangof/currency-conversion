@@ -14,9 +14,14 @@ export const API = 'https://api.exchangeratesapi.io/latest';
 const theme = createMuiTheme({
     palette: {
         type: 'dark',
-        primary: { main: '#FAAB1A', highlight: '#FF6700' },
-        // secondary: { main: '#FF6700' },
-        // background: { default: '#ECF0F3', light: '#E5E5E5' },
+        primary: { main: '#FAAB1A' },
+    },
+    typography: {
+        fontFamily: [
+            'Roboto',
+            'Arial',
+            'sans-serif'
+        ].join(','),
     }
 });
 
@@ -55,7 +60,7 @@ export default function App() {
         <ThemeProvider theme={theme}>
             <Container className="App" maxWidth={false}>
                 <Grid container className="Grid" justify="space-around" alignItems="flex-start" spacing={4}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} className="title">
                         <h1>Currency Conversion</h1>
                     </Grid>
 

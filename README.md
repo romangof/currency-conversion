@@ -8,6 +8,10 @@ Had some issues setting the source currency as I wanted to make only one request
 On Sunday I started around noon and quite soon made my mind that it was easier/faster to just make a couple more requests than trying to calculate all of the rates between the different currencies  
 On Sunday afternoon I spent the most time trying to setup unit tests  
 
+Had I had more time I would have of course tried to get the tests done right, they are currently kind of hacky and complicated
+And I would have also liked to get a better understanding of how to manage MaterialUI themes
+I would have also created a production server, which probably wasn't too hard but was the latest priority at the moment
+
 ----
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
