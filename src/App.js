@@ -13,9 +13,10 @@ const defaultCurrencies = ['EUR', 'USD', 'GBP'];
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#004E98', highlight: '#FF6700' },
-        secondary: { main: '#FF6700' },
-        background: { default: '#C0C0C0', light: '#E5E5E5' },
+        type: 'dark',
+        primary: { main: '#FAAB1A', highlight: '#FF6700' },
+        // secondary: { main: '#FF6700' },
+        // background: { default: '#ECF0F3', light: '#E5E5E5' },
     }
 });
 
