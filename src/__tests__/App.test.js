@@ -8,13 +8,15 @@ import App, { fetchData, defaultCurrencies, API } from '../App';
 jest.mock('axios');
 
 describe('App', () => {
+    afterEach(() => {
+        axios.get.mockReset();
+    });
+
     it('Renders without crashing', () => {
         shallow(<App />);
     });
     
     it('fetches rates correctly', async () => {
-        const setRates = jest.fn().mockResolvedValue();
-
         axios.get.mockResolvedValue({
             data: {
                 base: 'EUR',
@@ -23,36 +25,46 @@ describe('App', () => {
             }
         });
 
-        await fetchData(['USD'], 'EUR', setRates);
+        await fetchData(['USD'], 'EUR');
 
         expect(axios.get).toHaveBeenCalled();
         expect(axios.get).toHaveBeenCalledWith(`${API}?symbols=USD`);
-        expect(setRates).toHaveBeenCalled();
     });
 
-    xit('fetches rates when app is mounted', () => {
-        act(() => {
-            mount(<App />);
-
-            const requestsMade = defaultCurrencies.length;
-
-            axios.get.mockResolvedValue({
-                data: {
-                    // base: 'EUR',
-                    // date: '2019-11-15',
-                    // rates: { USD: 1.1034, GBP: 0.8566 }
-                }
-            });
-
-            expect(axios.get).toHaveBeenCalledTimes(requestsMade);
+    it('fetches rates when app is mounted', async () => {
+        axios.get.mockResolvedValue({
+            data: {
+                base: 'EUR',
+                rates: { USD: 1.1034, GBP: 0.8566 }
+            }
+        }).mockResolvedValueOnce({
+            data: {
+                base: 'USD',
+                rates: { EUR: 1.1034, GBP: 0.8566 }
+            }
+        }).mockResolvedValueOnce({
+            data: {
+                base: 'GBP',
+                rates: { EUR: 1.1034, USD: 0.8566 }
+            }
         });
-        
+
+        const wrapper = mount(<App />);
+
+        const requestsMade = defaultCurrencies.length;
+
+        await act(async () => {
+            await Promise.resolve(wrapper);
+            await new Promise(resolve => setImmediate(resolve));
+            wrapper.update();
+        });
+
+        expect(axios.get).toHaveBeenCalledTimes(requestsMade);
     });
     
     it('displays two currency cards', () => {
-        act(() => {
-            const wrapper = mount(<App />);
-            expect(wrapper.find('.MuiPaper-rounded')).toHaveLength(2);
-        });
+        const wrapper = mount(<App />);
+        
+        expect(wrapper.find('.MuiPaper-rounded')).toHaveLength(2);
     });
 });

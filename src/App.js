@@ -25,7 +25,7 @@ const theme = createMuiTheme({
     }
 });
 
-export async function fetchData(target, base = 'EUR', setRates) {
+export async function fetchData(target, base = 'EUR') {
     target = target.filter(currency => currency !== base);
 
     let query = `?symbols=${target.join()}`;
@@ -37,7 +37,7 @@ export async function fetchData(target, base = 'EUR', setRates) {
     const request = await axios.get(API + query);
     const data = request.data;
 
-    setRates(prevRates => ({ ...prevRates, [base]: data.rates }));
+    return { [base]: data.rates };
 }
 
 export default function App() {
@@ -45,7 +45,19 @@ export default function App() {
     const [selected, setSelected] = useState({ origin: 'EUR', target: 'USD', value: 0 });
 
     useEffect(() => {
-        defaultCurrencies.map(currency => fetchData(defaultCurrencies, currency, setRates));
+        async function getRates() {
+            let allRates = {};
+
+            for (const currency of defaultCurrencies) {
+                const rateData = await fetchData(defaultCurrencies, currency);
+
+                Object.assign(allRates, rateData);
+            }
+
+            setRates(allRates);
+        }
+
+        getRates();
     }, []);
 
     const handleInputChange = event => {
