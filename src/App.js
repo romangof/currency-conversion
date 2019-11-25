@@ -45,20 +45,17 @@ export default function App() {
     const [selected, setSelected] = useState({ origin: 'EUR', target: 'USD', value: 0 });
 
     useEffect(() => {
-        async function getRates() {
-            let allRates = {};
+        async function getRate() {
+            const rateData = await fetchData(defaultCurrencies, selected.origin);
 
-            for (const currency of defaultCurrencies) {
-                const rateData = await fetchData(defaultCurrencies, currency);
-
-                Object.assign(allRates, rateData);
-            }
-
-            setRates(allRates);
+            setRates(prevState => ({ ...prevState, ...rateData }));
         }
 
-        getRates();
-    }, []);
+        if (!Object.keys(rates[selected.origin]).length) {
+            getRate();
+        }
+        
+    }, [selected.origin]);
 
     const handleInputChange = event => {
         setSelected({...selected, value: parseInt(event.target.value)});
